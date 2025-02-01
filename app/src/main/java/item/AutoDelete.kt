@@ -3,6 +3,6 @@ package item
 data class AutoDelete(
     val id: Int,
     val name: String,
-    val timer: Int,
+    val time: Int,
     val isRunning: Boolean
 )
