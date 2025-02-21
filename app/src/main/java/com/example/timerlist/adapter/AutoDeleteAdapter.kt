@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timerlist.databinding.ItemAutoDeleteBinding
 import com.example.timerlist.databinding.ItemNameBinding
-import item.AutoDelete
+import com.example.timerlist.item.AutoDelete
 
 class AutoDeleteAdapter : ListAdapter<AutoDelete, RecyclerView.ViewHolder>(AutoDeleteDiffUtil) {
 

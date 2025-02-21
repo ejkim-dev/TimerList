@@ -1,7 +1,7 @@
 package com.example.timerlist.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import item.AutoDelete
+import com.example.timerlist.item.AutoDelete
 
 object AutoDeleteDiffUtil: DiffUtil.ItemCallback<AutoDelete>() {
     override fun areItemsTheSame(oldItem: AutoDelete, newItem: AutoDelete): Boolean {
