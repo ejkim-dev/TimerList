@@ -22,14 +22,8 @@ class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        initializeData()
         initializeUi()
-        subscribeUi()
         subscribeViewModel()
-    }
-
-    private fun initializeData() {
-
     }
 
     private fun initializeUi() {
@@ -37,14 +31,7 @@ class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener 
         binding.recyclerView2.adapter = AutoDeleteAdapter(this)
     }
 
-    private fun subscribeUi() {
-        with(binding) {
-            recyclerView
-        }
-    }
-
     private fun subscribeViewModel() {
-
         viewModel.itemList.observe(this) {
             (binding.recyclerView.adapter as AutoDeleteAdapter).submitList(it)
         }
