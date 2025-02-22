@@ -6,18 +6,39 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.timerlist.databinding.ItemAutoDeleteBinding
 import com.example.timerlist.databinding.ItemNameBinding
-import com.example.timerlist.item.AutoDelete
+import com.example.timerlist.item.AutoDeleteItem
+import com.example.timerlist.item.BaseItem
 
-class AutoDeleteAdapter : ListAdapter<AutoDelete, RecyclerView.ViewHolder>(AutoDeleteDiffUtil) {
+class AutoDeleteAdapter(private val clickListener: OnItemClickListener) : ListAdapter<BaseItem, RecyclerView.ViewHolder>(AutoDeleteDiffUtil) {
 
-    private inner class DeleteIconWithNameViewHolder(binding: ItemNameBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private inner class DeleteIconWithNameViewHolder(
+        binding: ItemNameBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         val name = binding.textName
+
+        init {
+            binding.root.setOnClickListener {
+                val currentPosition = absoluteAdapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    clickListener.onItemClick(getItem(currentPosition), isOrdinaryItem = true)
+                }
+            }
+        }
+
     }
 
     private inner class AutoDeleteViewHolder(binding: ItemAutoDeleteBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val name = binding.textDeleteName
+
+        init {
+            binding.root.setOnClickListener {
+                val currentPosition = absoluteAdapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    clickListener.onItemClick(getItem(currentPosition), isOrdinaryItem = false)
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -47,6 +68,10 @@ class AutoDeleteAdapter : ListAdapter<AutoDelete, RecyclerView.ViewHolder>(AutoD
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).isRunning) 1 else 0
+        return if (getItem(position) is AutoDeleteItem) 1 else 0
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(item: BaseItem, isOrdinaryItem: Boolean)
     }
 }

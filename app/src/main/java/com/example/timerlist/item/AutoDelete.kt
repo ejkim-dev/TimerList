@@ -1,8 +1,18 @@
 package com.example.timerlist.item
 
-data class AutoDelete(
-    val id: Int,
-    val name: String,
-    val time: Int = 3,
-    val isRunning: Boolean
-)
+interface BaseItem {
+    val id: Int
+    val name: String
+}
+
+data class OrdinaryItem(
+    override val id: Int,
+    override val name: String
+) : BaseItem
+
+data class AutoDeleteItem(
+    override val id: Int,
+    override val name: String,
+    val time: Int = 3
+): BaseItem
+
