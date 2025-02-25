@@ -15,3 +15,10 @@ RecyclerView 활용 ViewHolder 2개로 분할
         - 자동 삭제 제약 조건
             - 만약 A 어댑터로 바로 이동하면, 자동삭제는 진행하지 않음.
             - 아이템을 복구하면 다시 n초 카운트
+
+## 완성 샘플 이미지
+<p align="center">
+  <img src="https://github.com/ejkim-dev/TimerList/blob/main/sample/screenshot_20250225_172057.png" width="25%">
+  <img src="https://github.com/ejkim-dev/TimerList/blob/main/sample/screenshot_20250225_171938.png" width="25%">
+    <img src="https://github.com/ejkim-dev/TimerList/blob/main/sample/timer_list_record.gif" width="25%">
+</p>
