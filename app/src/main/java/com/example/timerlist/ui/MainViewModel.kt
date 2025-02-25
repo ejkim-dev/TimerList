@@ -1,7 +1,6 @@
 package com.example.timerlist.ui
 
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,8 +32,12 @@ class MainViewModel : ViewModel() {
                 is AutoDeleteItem -> OrdinaryItem(item.id, item.name)
                 else -> throw IllegalArgumentException("Unknown item type")
             }
+
+            // 중복 아이템 방지
+            if (newItems.find { it.id == ordinaryItem.id } != null) return
+
             newItems.add(ordinaryItem)
-            _itemList.postValue(newItems)
+            _itemList.value = newItems
         }
     }
 
@@ -42,7 +45,7 @@ class MainViewModel : ViewModel() {
         _itemList.value?.let {
             val newItems = it.toMutableList()
             newItems.remove(item)
-            _itemList.postValue(newItems)
+            _itemList.value = newItems
         }
     }
 
@@ -57,34 +60,39 @@ class MainViewModel : ViewModel() {
 
             countdownDelete(autoDeleteItem)
             newItems.add(autoDeleteItem)
-            _autoDeleteList.postValue(newItems)
+            _autoDeleteList.value = newItems
         }
     }
 
     fun deleteAutoDeleteItem(item: AutoDeleteItem) {
         _autoDeleteList.value?.let {
             val newItems = it.toMutableList()
-            newItems.remove(item)
+            newItems.removeAll { it.id == item.id }
             cancelCountdown(item)
-            _autoDeleteList.postValue(newItems)
+            _autoDeleteList.value = newItems
         }
     }
 
     private fun countdownDelete(item: AutoDeleteItem) {
         cancelCountdown(item) // 중복 타이머 방지
 
-        val timer = object : CountDownTimer((item.time * 1000).toLong(), 1000L) {
+        var currentTime = 10
+        val timer = object : CountDownTimer(currentTime * 1000L, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
-                Log.d("#####", "onTick: ${item.name} | $millisUntilFinished")
+                _autoDeleteList.value?.let {
+                    val newItems = it.toMutableList()
+                    val index = newItems.indexOfFirst { it.id == item.id }
+                    if (index >= 0) {
+                        newItems[index] = AutoDeleteItem(item.id, item.name, currentTime - 1)
+                        _autoDeleteList.value = newItems
+                    }
+                    currentTime -= 1
+                }
             }
 
             override fun onFinish() {
-                _autoDeleteList.value?.let {
-                    if (it.contains(item)) { // 중복 방지
-                        deleteAutoDeleteItem(item)
-                        addOrdinaryItem(item)
-                    }
-                }
+                deleteAutoDeleteItem(item)
+                addOrdinaryItem(item)
                 countdownTimers.remove(item.id) // onFinish 호출 시 타이머 삭제
             }
         }

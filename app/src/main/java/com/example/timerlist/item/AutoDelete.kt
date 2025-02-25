@@ -13,6 +13,6 @@ data class OrdinaryItem(
 data class AutoDeleteItem(
     override val id: Int,
     override val name: String,
-    val time: Int = 3
+    val time: Int = 0
 ): BaseItem
 

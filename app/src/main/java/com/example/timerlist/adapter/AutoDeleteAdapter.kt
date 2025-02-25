@@ -30,6 +30,7 @@ class AutoDeleteAdapter(private val clickListener: OnItemClickListener) : ListAd
     private inner class AutoDeleteViewHolder(binding: ItemAutoDeleteBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val name = binding.textDeleteName
+        val remainingTime = binding.textRemainingSecondsValue
 
         init {
             binding.root.setOnClickListener {
@@ -63,6 +64,7 @@ class AutoDeleteAdapter(private val clickListener: OnItemClickListener) : ListAd
             }
             is AutoDeleteViewHolder -> {
                 holder.name.text = currentItem.name
+                holder.remainingTime.text = (currentItem as AutoDeleteItem).time.toString()
             }
         }
     }

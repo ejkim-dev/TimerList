@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_auto_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -27,6 +28,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@+id/image_auto_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
             android:id="@+id/text_delete_name"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
@@ -41,5 +50,23 @@
             tools:text="A" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_remaining_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="remaining seconds : "
+        app:layout_constraintTop_toBottomOf="@+id/container_auto_delete"
+        app:layout_constraintStart_toStartOf="@+id/container_auto_delete"/>
+
+    <TextView
+        android:id="@+id/text_remaining_seconds_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/text_remaining_seconds"
+        app:layout_constraintTop_toTopOf="@+id/text_remaining_seconds"
+        app:layout_constraintBottom_toBottomOf="@+id/text_remaining_seconds"
+        tools:text="3"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

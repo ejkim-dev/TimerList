@@ -1,8 +1,13 @@
 package com.example.timerlist.ui
 
 import android.os.Bundle
+import android.view.ViewGroup
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import com.example.timerlist.adapter.AutoDeleteAdapter
 import com.example.timerlist.databinding.ActivityMainBinding
 import com.example.timerlist.item.AutoDeleteItem
@@ -20,6 +25,7 @@ class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
 
         initializeUi()
@@ -27,6 +33,7 @@ class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener 
     }
 
     private fun initializeUi() {
+        setLayoutMargin()
         binding.recyclerView.adapter = AutoDeleteAdapter(this)
         binding.recyclerView2.adapter = AutoDeleteAdapter(this)
     }
@@ -38,6 +45,20 @@ class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener 
 
         viewModel.autoDeleteList.observe(this) {
             (binding.recyclerView2.adapter as AutoDeleteAdapter).submitList(it)
+        }
+    }
+
+    private fun setLayoutMargin() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val currentInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                topMargin = currentInsets.top
+                bottomMargin = currentInsets.bottom
+                leftMargin = currentInsets.left
+                rightMargin = currentInsets.right
+            }
+            insets
         }
     }
 
