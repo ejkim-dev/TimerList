@@ -1,6 +1,6 @@
 package com.example.timerlist.item
 
-interface BaseItem {
+sealed interface BaseItem {
     val id: Int
     val name: String
 }

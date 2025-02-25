@@ -28,9 +28,8 @@ class MainViewModel : ViewModel() {
         _itemList.value?.let {
             val newItems = it.toMutableList()
             val ordinaryItem = when (item) {
-                is OrdinaryItem -> item as OrdinaryItem
+                is OrdinaryItem -> item
                 is AutoDeleteItem -> OrdinaryItem(item.id, item.name)
-                else -> throw IllegalArgumentException("Unknown item type")
             }
 
             // 중복 아이템 방지
@@ -53,9 +52,8 @@ class MainViewModel : ViewModel() {
         _autoDeleteList.value?.let {
             val newItems = it.toMutableList()
             val autoDeleteItem = when (item) {
-                is AutoDeleteItem -> item as AutoDeleteItem
+                is AutoDeleteItem -> item
                 is OrdinaryItem -> AutoDeleteItem(item.id, item.name)
-                else -> throw IllegalArgumentException("Unknown item type")
             }
 
             countdownDelete(autoDeleteItem)
