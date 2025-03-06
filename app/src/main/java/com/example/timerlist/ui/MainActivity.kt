@@ -15,7 +15,7 @@ import com.example.timerlist.item.BaseItem
 import com.example.timerlist.item.OrdinaryItem
 
 
-class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener {
+class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -29,22 +29,44 @@ class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener 
         setContentView(binding.root)
 
         initializeUi()
-        subscribeViewModel()
+        observeViewModel()
     }
 
     private fun initializeUi() {
         setLayoutMargin()
-        binding.recyclerView.adapter = AutoDeleteAdapter(this)
-        binding.recyclerView2.adapter = AutoDeleteAdapter(this)
+        setupRecyclerViews()
     }
 
-    private fun subscribeViewModel() {
-        viewModel.itemList.observe(this) {
-            (binding.recyclerView.adapter as AutoDeleteAdapter).submitList(it)
+    private fun setupRecyclerViews() {
+        binding.recyclerView.adapter = AutoDeleteAdapter { item ->
+            handleItemClick(item)
         }
 
-        viewModel.autoDeleteList.observe(this) {
-            (binding.recyclerView2.adapter as AutoDeleteAdapter).submitList(it)
+        binding.recyclerView2.adapter = AutoDeleteAdapter { item ->
+            handleItemClick(item)
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.itemList.observe(this) { list ->
+            (binding.recyclerView.adapter as? AutoDeleteAdapter)?.submitList(list)
+        }
+
+        viewModel.autoDeleteList.observe(this) { list ->
+            (binding.recyclerView2.adapter as? AutoDeleteAdapter)?.submitList(list)
+        }
+    }
+
+    private fun handleItemClick(item: BaseItem) {
+        when(item) {
+            is OrdinaryItem -> {
+                viewModel.deleteItemList(item)
+                viewModel.addAutoDeleteItem(item)
+            }
+            is AutoDeleteItem -> {
+                viewModel.deleteAutoDeleteItem(item)
+                viewModel.addOrdinaryItem(item)
+            }
         }
     }
 
@@ -53,23 +75,9 @@ class MainActivity : AppCompatActivity(), AutoDeleteAdapter.OnItemClickListener 
             val currentInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
             v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                topMargin = currentInsets.top
-                bottomMargin = currentInsets.bottom
-                leftMargin = currentInsets.left
-                rightMargin = currentInsets.right
+                setMargins(currentInsets.left, currentInsets.top, currentInsets.right, currentInsets.bottom)
             }
             insets
         }
     }
-
-    override fun onItemClick(item: BaseItem, isOrdinaryItem: Boolean) {
-        if (isOrdinaryItem) {
-            viewModel.deleteItemList(item as OrdinaryItem)
-            viewModel.addAutoDeleteItem(item)
-        } else {
-            viewModel.deleteAutoDeleteItem(item as AutoDeleteItem)
-            viewModel.addOrdinaryItem(item)
-        }
-    }
-
 }
