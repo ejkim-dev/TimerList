@@ -22,3 +22,17 @@ RecyclerView 활용 ViewHolder 2개로 분할
   <img src="https://github.com/ejkim-dev/TimerList/blob/main/sample/screenshot_20250225_171938.png" width="25%">
     <img src="https://github.com/ejkim-dev/TimerList/blob/main/sample/timer_list_record.gif" width="25%">
 </p>
+
+## 기술 스택
+- **언어:** Kotlin  
+- **UI:** XML + ViewBinding
+- **비동기 처리:** LiveData, CountDownTimer
+- **상태 관리:** ViewModel
+
+## 개발 환경
+- **Android Studio:**  Ladybug Feature Drop | 2024.2.2 
+- **Gradle 버전:** 8.9
+- **Min SDK:** 26  
+- **Target SDK:** 35
+
+  
